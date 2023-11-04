@@ -48,7 +48,7 @@ elapsed_time = et - st
 print('Execution time of program: ', elapsed_time, 'seconds')
 
 
-
+#remove 4 swapped
 '''op:
 5
 1 2 3 4 5
