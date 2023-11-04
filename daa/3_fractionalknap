@@ -1,0 +1,58 @@
+#fractional knapsack
+import time
+
+n=int(input("Enter total number of items: "))
+i= list(map(int,input("Enter the item numbers: ").split()))
+p= list(map(int,input("Enter the profits: ").split()))
+w= list(map(int,input("Enter the weights: ").split()))
+k=int(input("Enter knapsack size: "))
+
+st = time.time()
+
+pw=[]
+for x in range(n):
+	temp=p[x]/w[x]
+	pw.append(temp)
+
+swapped = False
+for y in range(n-1):
+	for z in range(0, n-y-1):
+		if pw[z] < pw[z+1]:
+			swapped=True
+			pw[z],pw[z+1]=pw[z+1],pw[z]
+			p[z],p[z+1]=p[z+1],p[z]
+			i[z],i[z+1]=i[z+1],i[z]
+			w[z],w[z+1]=w[z+1],w[z]
+	if not swapped:
+		break
+
+f_items=[]
+f_profit=0
+x=0
+while(k!=0):
+	if(w[x]<=k):
+		k-=w[x]
+		f_profit+=p[x]
+		f_items.append(i[x])
+	else:
+		f_profit+=((k*p[x])/w[x])
+		k=0
+		f_items.append(i[x])
+	x+=1
+	
+print("Items selected: ",f_items)
+print("Total profit is: ",f_profit)
+
+et = time.time()
+elapsed_time = et - st
+print('Execution time of program: ', elapsed_time, 'seconds')
+
+
+
+'''op:
+5
+1 2 3 4 5
+10 15 10 20 8
+3 3 2 5 1
+10
+'''
