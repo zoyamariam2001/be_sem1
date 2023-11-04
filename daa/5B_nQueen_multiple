@@ -1,3 +1,5 @@
+import time
+
 def safe(arr,x,y,n):
     #checking if queen in same column
     for row in range(x):
@@ -52,14 +54,16 @@ def Nqueen(arr,x,n,count):
 
 def main():
     n = int(input("Enter number of queens:  "))
+    start = time.time()
     # Create an empty board of size n x n
     arr = [[0]* n for i in range(n)]
     count = [0]
 
     # Placing the queens on the board recursively
     Nqueen(arr,0,n,count)
-    print("Number of possible solutions",count[0])
-    #add time
+    print("Number of possible solutions: ",count[0])
+    end = time.time()
+    print("The time taken to execute the program is :", (end-start) * 10**3, "ms")
 
 if __name__ == '__main__':
     main()
