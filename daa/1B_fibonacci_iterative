@@ -1,0 +1,21 @@
+#Fibonacci series- iterative
+
+import time
+
+n=int(input("Enter number till which you wish to print: "))
+
+start_time=time.time()
+print("Start time (in seconds): ",start_time)
+a=0
+b=1
+final=0
+print("Fibonacci Series is: 0 1", end=" ")
+for i in range(0,n-2):
+    final=a+b
+    print(final,end=" ")
+    a=b
+    b=final
+
+end_time=time.time()
+print("\nEnd time:  (in seconds)",end_time)
+print("Total time taken for program to execute:  (in seconds)",end_time-start_time)
