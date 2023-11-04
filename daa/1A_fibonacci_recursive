@@ -1,0 +1,27 @@
+#Fibonacci series -recursive
+
+import time
+
+n=int(input("Enter number till which you wish to print: "))
+
+start_time=time.time()
+print("Start time: ",start_time)
+a=0
+b=1
+final=0
+
+print("Fibonacci Series is: ")
+
+def fibo(i):
+    if(i<=1):
+        return i
+    else:
+        return (fibo(i-1)+ fibo(i-2))
+    
+
+for i in range(n):
+    print(fibo(i), end=" ")
+
+end_time=time.time()
+print("\nEnd time: ",end_time)
+print("Total time taken for program to execute: ",end_time-start_time)
