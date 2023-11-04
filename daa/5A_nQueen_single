@@ -1,0 +1,52 @@
+#n queen
+import time
+
+def issafe(a,x,y,n):
+	for row in range(x):
+		if a[row][y]==1:
+			return False   #check columns if there are 1s in it already
+	row=x
+	col=y
+	while(row>=0 and col>=0):      #check diagonals if there are 1s in it already
+		if a[row][col]==1:
+			return False
+		row-=1
+		col-=1
+	
+	row=x
+	col=y
+	while(row>=0 and col<n):         #check antidiagonals if there are 1s in it already
+		if a[row][col]==1:
+			return False
+		row-=1
+		col+=1
+		
+	return True
+
+def nQueen(a, b, n):
+	if b>=n:
+		return True
+	for col in range(n):
+		if issafe(a,b,col,n):
+			a[b][col]=1
+			if nQueen(a,b+1,n):
+				return True
+			a[b][col]=0
+	return False
+
+def main():
+	n=int(input("Enter number of Queens: "))
+	start = time.time()
+	a=[[0]*n for i in range(n)]    #making the array
+	
+	if nQueen(a,0,n):
+		for i in range(n):
+			for j in range(n):
+				print(a[i][j],end=" ")       #displaying output
+			print()                              #changing lines
+	else: print("Error")	
+	end = time.time()
+	print("The time taken to execute the program is :", (end-start) * 10**3, "ms")
+			
+if __name__=="__main__":
+	main()
