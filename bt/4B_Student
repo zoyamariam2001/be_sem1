@@ -1,3 +1,6 @@
+/*remix.ethereum.org*/
+/*4-name-StudentRegister.sol*/
+
 // SPDX-License-Identifier: MIT
 pragma solidity >= 0.7.0;
 
