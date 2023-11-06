@@ -1,0 +1,80 @@
+
+import numpy as np
+import pandas as pd
+import seaborn as sns
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+
+from sklearn.metrics import r2_score
+from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_squared_error
+
+import warnings
+warnings.filterwarnings('ignore')
+################################
+data = pd.read_csv('uber.csv')
+#################################
+data.head()
+################################
+data.shape
+################################
+data.isnull().sum()  #Data Preprocessing
+#################################
+data.drop(columns='Unnamed: 0',inplace=True)
+#################################
+data=data.dropna()
+##################################
+data = data[data['fare_amount']> 0]
+data["pickup_datetime"] = data["pickup_datetime"].apply(lambda x:[x[0:10] for x in x.split(' ')])
+data['pickup_datetime'] = data['pickup_datetime'].apply(lambda x:x[0])
+data['pickup_datetime'] = pd.DatetimeIndex(data['pickup_datetime']).year
+#####################################
+data.drop(columns=['key','pickup_datetime'],inplace=True)
+####################################
+X = data.drop(['fare_amount'],axis=1)
+y = data['fare_amount']
+x_train,x_test,y_train,y_test = train_test_split(X,y,test_size=0.25,random_state=0)
+#####################################
+data.corr() #correlation
+######################################
+sns.boxplot(data['fare_amount']) #Outlier detection
+#####################################
+#removing the outlier
+Q1 = np.percentile(data['fare_amount'], 25, interpolation = 'midpoint')
+Q3 = np.percentile(data['fare_amount'],75, interpolation='midpoint')
+print(Q1,Q3)
+#######################################
+data.drop(data[data['fare_amount'].values>12.5].index, inplace=True)
+#######################################
+sns.boxplot(data['fare_amount'])
+#######################################
+#Linear regression
+linear_model = LinearRegression()
+linear_model.fit(x_train,y_train)
+y_pred = linear_model.predict(x_test)
+#######################################
+from math import sqrt
+
+def evaluate_model(y_true, y_pred, model_name):
+  rmse = sqrt(mean_squared_error(y_true,y_pred))
+  r2 = r2_score(y_true,y_pred)
+  print(f"{model_name} RMSE: {rmse:.2f}")
+  print(f"{model_name} R-squared (R2): {r2:.2f}")
+
+evaluate_model(y_test,y_pred,"Linear Regression")
+#########################################
+rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
+rf_model.fit(x_train, y_train)
+y_pred_rf = rf_model.predict(x_test)
+######################################
+def evaluate_model(y_true, y_pred, model_name):
+  rmse = sqrt(mean_squared_error(y_true, y_pred))
+  r2 = r2_score(y_true, y_pred)
+  print(f"{model_name} RMSE: {rmse:.2f}")
+  print(f"{model_name} R-squared (R2): {r2:.2f}")
+
+evaluate_model(y_test,y_pred_rf,"Random Forest Regression")
+########################################
