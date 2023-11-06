@@ -47,7 +47,7 @@ et = time.time()
 elapsed_time = et - st
 print('Execution time of program: ', elapsed_time, 'seconds')
 
-
+#time complexity= O(n log n)
 #remove 4 swapped
 '''op:
 5
