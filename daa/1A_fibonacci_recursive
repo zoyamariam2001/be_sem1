@@ -25,3 +25,5 @@ for i in range(n):
 end_time=time.time()
 print("\nEnd time: ",end_time)
 print("Total time taken for program to execute: ",end_time-start_time)
+
+#time complexity- 2**n
