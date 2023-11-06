@@ -1,0 +1,96 @@
+import pandas as pd
+import numpy as np
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
+############################################
+df = pd.read_csv("emails.csv")
+#########################################
+df
+###################################
+df.describe()
+###################################
+df.info()
+###################################
+df.isnull()
+###############################
+df.isnull().sum()
+###############################
+null_count = df.isnull().sum()
+#Filter column with value more than one null value
+column_null = null_count[null_count >= 1]
+column_null
+####################################
+df.isnull().sum()
+# all row having value as null
+#####################################
+# remove email column as it is unnecessary
+x = df.iloc[:,1:3001]
+#######################################
+x.head()
+###############################
+# output class
+
+y = df.iloc[:,-1]
+y.head()
+#####################################
+#Training and Testing Model
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=.2, random_state = 12)
+#################################
+x_test
+#######################
+# Feature Scaling
+
+from sklearn.preprocessing import StandardScaler
+
+sc = StandardScaler()
+###########################
+x_train = sc.fit_transform(x_train)
+x_test = sc.fit_transform(x_test)
+############################
+#K-Nearest Neighbour
+# Fitting K-NN classifier to the training set
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier(n_neighbors=5, metric='minkowski', p=2)
+knn.fit(x_train, y_train)
+###########################################
+y_pred = knn.predict(x_test)
+y_pred
+######################################
+cm = confusion_matrix(y_test,y_pred)
+cm
+#######################################
+# Confusion matrix graph using heatmap
+
+sns.heatmap(cm, annot=True, fmt=".2f", cmap= "Blues")
+plt.xlabel("Predicted")
+plt.ylabel("True")
+plt.title("Confusion Matrix")
+plt.show()
+#####################################
+accuracy_score(y_test, y_pred)
+##########################
+#Support Vector Machine
+from sklearn.svm import SVC
+svc = SVC(kernel='linear', random_state=0)
+svc.fit(x_train, y_train)
+#############################
+y_pred = svc.predict(x_test) #prediction
+y_pred
+############################
+cm = confusion_matrix(y_test, y_pred)   #confusion matrix
+cm
+##############################
+#confusion matrix graph representation
+
+sns.heatmap(cm, annot=True, fmt = '.2f', cmap='Reds')
+plt.xlabel("Predicted")
+plt.ylabel("True")
+plt.title("Confusion Matrix")
+plt.show()
+#######################
+accuracy_score(y_test,y_pred) #accuracy score
+######################
